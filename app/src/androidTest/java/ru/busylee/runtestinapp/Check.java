@@ -1,5 +1,7 @@
 package ru.busylee.runtestinapp;
 
+import ru.busylee.runtestinapp.TestCheck;
+
 /**
  * Created by busylee on 18.10.16.
  */

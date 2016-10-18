@@ -8,13 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
@@ -34,7 +28,7 @@ public class MyAppDelegate {
     if(DEBUG_MODE) {
       arguments.putString("debug", "true");
     }
-    arguments.putString("package", "ru.busylee.runtestinapp");
+    arguments.putString("class", "ru.busylee.runtestinapp.MainActivityCaseR,ru.busylee.runtestinapp.MainActivityCaseR2");
     arguments.putString("name", "ru.busylee.testing.MyCustomRunner");
     arguments.putString("listener", "ru.busylee.testing.MyRunListener");
     if (!context.startInstrumentation(new ComponentName(context, MyCustomRunner.class), null, arguments)) {
@@ -49,40 +43,6 @@ public class MyAppDelegate {
     }
     catch (Exception e) {
       Log.e(TAG, "Did not find secondary dex. Going ahead with normal startup", e);
-    }
-  }
-
-  /**
-   * File I/O code to copy the secondary dex file from asset resource to
-   * internal storage.
-   */
-  private void prepareDex(File dexInternalStoragePath) throws IOException
-  {
-    BufferedInputStream bis = null;
-    OutputStream dexWriter = null;
-
-    // Buffer size for file copying. While 8kb is used in this sample, you
-    // may want to tweak it based on actual size of the secondary dex file
-    // involved.
-    final int BUF_SIZE = 8 * 1024;
-
-    try {
-      bis = new BufferedInputStream(new FileInputStream(new File(Environment.getExternalStorageDirectory() + "/test.apk")));
-      dexWriter = new BufferedOutputStream(new FileOutputStream(dexInternalStoragePath));
-      byte[] buf = new byte[BUF_SIZE];
-      int len;
-      while ((len = bis.read(buf, 0, BUF_SIZE)) > 0) {
-        dexWriter.write(buf, 0, len);
-      }
-    }
-    finally {
-      if (dexWriter != null) {
-        dexWriter.close();
-      }
-
-      if (bis != null) {
-        bis.close();
-      }
     }
   }
 
