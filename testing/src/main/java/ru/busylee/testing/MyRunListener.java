@@ -65,7 +65,10 @@ public class MyRunListener extends RunListener {
   @Override
   public void testRunStarted(Description description) throws Exception {
     super.testRunStarted(description);
-    Log.d(TAG, "testRunStarted");
+    Log.d(TAG, "testRunStarted description = " + description.getDisplayName());
+    for(Description desc: description.getChildren()) {
+      Log.d(TAG, "testRunStarted child = " + desc.getDisplayName());
+    }
     testStorage = TestStorageImpl.getInstance(InstrumentationRegistry.getTargetContext());
     testStorage.clear();
   }

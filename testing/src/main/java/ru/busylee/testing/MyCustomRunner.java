@@ -1,6 +1,7 @@
 package ru.busylee.testing;
 
 import android.os.Bundle;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnitRunner;
 import android.util.Log;
 
@@ -13,6 +14,13 @@ public class MyCustomRunner extends AndroidJUnitRunner {
   private static final String TAG = "MyCustomRunner";
 
   public MyCustomRunner() {}
+
+  @Override
+  public void onCreate(Bundle arguments) {
+    super.onCreate(arguments);
+    new MyAppDelegate().attachBaseContext(InstrumentationRegistry.getContext());
+    Log.d(TAG, "onCreate()");
+  }
 
   @Override
   public void onStart() {
@@ -31,4 +39,5 @@ public class MyCustomRunner extends AndroidJUnitRunner {
     Log.d(TAG, "onException()");
     return super.onException(obj, e);
   }
+
 }
