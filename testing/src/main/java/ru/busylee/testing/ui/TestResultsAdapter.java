@@ -2,6 +2,7 @@ package ru.busylee.testing.ui;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,13 @@ public class TestResultsAdapter extends BaseAdapter {
     TestDescription item = getItem(i);
     holder.tvName.setText(item.name);
     holder.tvResult.setText(item.result);
+
+    //TODO remove this shit
+    if("success".equals(item.result)) {
+      holder.tvResult.setTextColor(Color.GREEN);
+    } else {
+      holder.tvResult.setTextColor(Color.RED);
+    }
 
     return view;
   }
