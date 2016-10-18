@@ -80,7 +80,7 @@ public class MyRunListener extends RunListener {
   private TestDescription fromDescription(Description description, boolean success) {
     TestDescription testDescription = new TestDescription();
     testDescription.name = description.getDisplayName();
-    testDescription.result = success ? "sucess" : "failure";
+    testDescription.result = success ? "success" : "failure";
     return testDescription;
   }
 
