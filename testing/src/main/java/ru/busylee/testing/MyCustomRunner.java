@@ -1,6 +1,7 @@
 package ru.busylee.testing;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnitRunner;
 import android.util.Log;
@@ -8,18 +9,17 @@ import android.util.Log;
 /**
  * Created by busylee on 15.10.16.
  */
-
 public class MyCustomRunner extends AndroidJUnitRunner {
 
   private static final String TAG = "MyCustomRunner";
 
-  public MyCustomRunner() {}
-
   @Override
   public void onCreate(Bundle arguments) {
     super.onCreate(arguments);
-    new MyAppDelegate().attachBaseContext(InstrumentationRegistry.getContext());
     Log.d(TAG, "onCreate()");
+    //read from arguments
+    String pathToTestApk = Environment.getExternalStorageDirectory() + "/test.apk";
+    MyInstrumentationHelper.inject(pathToTestApk, InstrumentationRegistry.getContext());
   }
 
   @Override
@@ -39,5 +39,7 @@ public class MyCustomRunner extends AndroidJUnitRunner {
     Log.d(TAG, "onException()");
     return super.onException(obj, e);
   }
+
+
 
 }

@@ -1,15 +1,12 @@
 package ru.busylee.runtestinapp;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import ru.busylee.testing.MyAppDelegate;
-import ru.busylee.testing.MyCustomRunner;
+import ru.busylee.testing.MyInstrumentationHelper;
 import ru.busylee.testing.ui.TestResultActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -47,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_test:
-                MyAppDelegate.startInstrumentation(this);
+                MyInstrumentationHelper.startInstrumentation(this);
                 break;
             case R.id.show_results: {
                 Intent intent = new Intent(this, TestResultActivity.class);

@@ -18,16 +18,19 @@ import ru.busylee.testing.utils.ClassLoaderInjector;
  * Created by busylee on 17.10.16.
  */
 
-public class MyAppDelegate {
+public class MyInstrumentationHelper {
 
+//  private static final boolean DEBUG_MODE = true;
   private static final boolean DEBUG_MODE = false;
-  private static final String TAG = "MyAppDelegate";
+
+  private static final String TAG = "MyInstrumentationHelper";
 
   public static void startInstrumentation(Context context) {
     Bundle arguments = new Bundle();
     if(DEBUG_MODE) {
       arguments.putString("debug", "true");
     }
+//    arguments.putString("package", "ru.busylee.runtestinapp");
     arguments.putString("class", "ru.busylee.runtestinapp.MainActivityCaseR,ru.busylee.runtestinapp.MainActivityCaseR2");
     arguments.putString("name", "ru.busylee.testing.MyCustomRunner");
     arguments.putString("listener", "ru.busylee.testing.MyRunListener");
@@ -36,10 +39,10 @@ public class MyAppDelegate {
     }
   }
 
-  public void attachBaseContext(Context base) {
+  public static void inject(String pathToTestApk, Context base) {
     try {
       final File optimizedDexOutputPath = base.getCacheDir();
-      ClassLoaderInjector.add(new File(Environment.getExternalStorageDirectory() + "/test.apk"), optimizedDexOutputPath, (PathClassLoader) base.getClassLoader());
+      ClassLoaderInjector.add(new File(pathToTestApk), optimizedDexOutputPath, (PathClassLoader) base.getClassLoader());
     }
     catch (Exception e) {
       Log.e(TAG, "Did not find secondary dex. Going ahead with normal startup", e);
