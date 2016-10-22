@@ -12,6 +12,7 @@ import java.io.File;
 
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
+import ru.busylee.testing.analyser.TestRun;
 import ru.busylee.testing.utils.ClassLoaderInjector;
 
 /**
@@ -25,13 +26,14 @@ public class MyInstrumentationHelper {
 
   private static final String TAG = "MyInstrumentationHelper";
 
-  public static void startInstrumentation(Context context) {
+  public static void startInstrumentation(Context context, TestRun testRun) {
     Bundle arguments = new Bundle();
     if(DEBUG_MODE) {
       arguments.putString("debug", "true");
     }
+    testRun.applyToBundle(arguments);
 //    arguments.putString("package", "ru.busylee.runtestinapp");
-    arguments.putString("class", "ru.busylee.runtestinapp.MainActivityCaseR,ru.busylee.runtestinapp.MainActivityCaseR2");
+//    arguments.putString("class", "ru.busylee.runtestinapp.MainActivityCaseR,ru.busylee.runtestinapp.MainActivityCaseR2");
     arguments.putString("name", "ru.busylee.testing.MyCustomRunner");
     arguments.putString("listener", "ru.busylee.testing.MyRunListener");
     if (!context.startInstrumentation(new ComponentName(context, MyCustomRunner.class), null, arguments)) {
@@ -53,7 +55,7 @@ public class MyInstrumentationHelper {
     ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
     // must set the context classloader for apps that use a shared uid, see
     // frameworks/base/core/java/android/app/LoadedApk.java
-    ClassLoader newClassLoader = convertClassLoader(context, originalClassLoader);
+    ClassLoader newClassLoader = getTestClassLoader(context, originalClassLoader);
     Log.i(TAG, String.format("Setting context classloader to '%s', Original: '%s'",
             newClassLoader.toString(), originalClassLoader.toString()));
     Thread.currentThread().setContextClassLoader(newClassLoader);
@@ -61,8 +63,8 @@ public class MyInstrumentationHelper {
 
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  private ClassLoader convertClassLoader(Context context, ClassLoader classLoader) {
-    File dexOutputDir = context.getCodeCacheDir();
+  public ClassLoader getTestClassLoader(Context context, ClassLoader classLoader) {
+    File dexOutputDir = context.getCacheDir();
     DexClassLoader dexClassLoader = new DexClassLoader(
             Environment.getExternalStorageDirectory().getPath() + "/test.apk",
             dexOutputDir.getAbsolutePath(),

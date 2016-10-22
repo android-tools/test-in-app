@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import ru.busylee.testing.MyInstrumentationHelper;
 import ru.busylee.testing.ui.TestResultActivity;
+import ru.busylee.testing.ui.TestRunActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_test:
-                MyInstrumentationHelper.startInstrumentation(this);
+                startActivity(new Intent(this, TestRunActivity.class));
                 break;
             case R.id.show_results: {
-                Intent intent = new Intent(this, TestResultActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, TestResultActivity.class));
                 break;
             }
         }

@@ -1,5 +1,7 @@
 package ru.busylee.runtestinapp;
 
+import org.junit.runners.Suite;
+
 import ru.busylee.runtestinapp.TestCheck;
 
 /**

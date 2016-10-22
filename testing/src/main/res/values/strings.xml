@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">testing</string>
+    <string name="testing_find_tests">Find tests</string>
 </resources>
