@@ -9,6 +9,7 @@ import org.junit.runners.Suite;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -24,7 +25,7 @@ import static android.content.ContentValues.TAG;
 
 public class TestAnalyzer {
 
-  //TODO split
+  //TODO just to check for now
   public List<TestRun> findTestRunsInTestApk(Context context, String pathToTestApk) throws ClassNotFoundException, IOException {
     List<TestRun> testRuns = new ArrayList<>();
 
@@ -55,6 +56,16 @@ public class TestAnalyzer {
               if (annotation instanceof Suite.SuiteClasses) {
                 if (!suiteClasses.contains(entryClass)) {
                   suiteClasses.add(entryClass);
+                }
+              }
+            }
+            for (Method method : entryClass.getMethods()) {
+              annotations = method.getAnnotations();
+              for (Annotation annotation : annotations) {
+                if (annotation instanceof Test) {
+                  if (!classes.contains(entryClass)) {
+                    classes.add(entryClass);
+                  }
                 }
               }
             }
