@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
-import ru.busylee.testing.MyInstrumentationHelper;
 
 import static android.content.ContentValues.TAG;
 
@@ -29,10 +29,14 @@ public class TestAnalyzer {
   public List<TestRun> findTestRunsInTestApk(Context context, String pathToTestApk) throws ClassNotFoundException, IOException {
     List<TestRun> testRuns = new ArrayList<>();
 
-    DexFile dexFile = DexFile.loadDex(pathToTestApk, File.createTempFile("opt", "dex",
-            context.getCacheDir()).getPath(), 0);
-    ClassLoader classLoader = new MyInstrumentationHelper()
-            .getTestClassLoader(context, Thread.currentThread().getContextClassLoader());
+    final String tempDexFilesPath = File.createTempFile("opt", "dex",
+            context.getCacheDir()).getPath();
+    DexFile dexFile = DexFile.loadDex(pathToTestApk, tempDexFilesPath, 0);
+    ClassLoader classLoader = new DexClassLoader(
+            pathToTestApk,
+            context.getCacheDir().getAbsolutePath(),
+            null
+            ,Thread.currentThread().getContextClassLoader());
 
     // find classes with
     List<Class> classes = new ArrayList<>();

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,14 +34,15 @@ public class TestRunActivity extends Activity implements AdapterView.OnItemClick
     runVariants.setAdapter(mTestRunVariantsAdapter);
     runVariants.setOnItemClickListener(this);
 
+    //TODO permissions
     //TODO move to background
-    findTestVariants();
+    findTestVariants(Environment.getExternalStorageDirectory() + "/test.apk");
   }
 
-  private void findTestVariants() {
+  private void findTestVariants(String path) {
     try {
       List<TestRun> testVariants = new TestAnalyzer().findTestRunsInTestApk(this,
-              Environment.getExternalStorageDirectory() + "/test.apk");
+              path);
       mTestRunVariantsAdapter.addAll(testVariants);
       mTestRunVariantsAdapter.notifyDataSetChanged();
     } catch (ClassNotFoundException | IOException e) {
